@@ -1,0 +1,435 @@
+openapi: 3.0.3
+info:
+  title: part 1
+  description: part 1
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/'
+paths:
+  /authors:
+    #Creating,retrieving,updating and deleting a specific author
+    get:
+      summary: List all authors
+      responses:
+        '200':
+          description: Success response, A list of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        '400':
+          description: Error response
+    post: #creating an author
+      summary: Create an author
+      operationId: createAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '201':
+          description: Success! Author created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Error! Bad Request
+
+  /authors/{id}:
+    get:
+      summary : Get author by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64   #because it is a Long integer
+      responses:
+        '200':
+          description: Success! Author found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          description: Author Not Found
+    put: #updating an author
+      summary: Update a specific Author
+      operationId: updateAuthor
+      requestBody:
+        required: true
+        content:
+         application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+          '200':
+            description: Author updated
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Author'
+          '400':
+            description: Bad Request!!
+          '404':
+            description: Author Not Found!
+    delete:
+        summary: Delete a specific author
+        operationId: deleteAuthor
+        responses:
+          '204':
+            description: Author deleted
+          '404':
+            description: Author Not Found
+
+  /authors/{id}/books:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      get:
+        summary: Lists all books written by an author
+        operationId: listAuthorBooks
+        responses:
+          '200':
+            description: A list of Books written by the Author
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Book'
+          '400':
+            description: Bad Request
+          '404':
+            description: Author Not Found
+
+  /books:
+      get:
+          summary: List all books
+          operationId: listBooks
+          responses:
+            '200':
+              description: A list of books
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+            '400':
+              description: Bad Request
+      post:
+        summary: Create a book
+        operationId: createBook
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        responses:
+          '201':
+            description: Book created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Book'
+          '400':
+            description: Bad Request
+
+
+
+  /books/{ISBN}:
+      parameters:
+        - name: ISBN
+          in: path
+          required: true
+          schema:
+            type: string
+      get:
+        summary: Retrieve a specific book
+        operationId: getBook
+        responses:
+          '200':
+            description: Book found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Book'
+          '404':
+            description: Book Not Found
+      put: #updating a specific book
+        summary: Update a specific Book
+        operationId: updateBook
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        responses:
+          '200':
+            description: Book updated
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Book'
+          '400':
+            description: Bad Request!!
+          '404':
+            description: Book Not Found!
+
+      delete:
+        summary: Delete a specific book
+        operationId: deleteBook
+        responses:
+          '204':
+            description: Book deleted
+          '404':
+            description: Book Not Found
+
+
+  /modules/{ISBN}/orders:
+    parameters:
+      - name: ISBN
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Lists all orders containing a specific book
+      operationId: listOrdersContainingSpecificBooks
+      responses:
+        '200':
+          description: List of orders with specific book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad Request
+        '404':
+          description: Order Not Found
+
+
+  /orders:
+    get:
+      summary: List all orders
+      operationId: listOrders
+      responses:
+        '200':
+          description: A list of all Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+
+    post:
+      summary: Create an Order
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+
+  /orders/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Retrieve a specific order
+      operationId: getOrder
+      responses:
+        '200':
+          description: Order found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order Not Found
+    put:
+      summary: Update a specific order
+      operationId: updateOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+        '404':
+          description: Order Not Found
+
+  /convenors/{id}/orders:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: List all books in an order
+      operationId: listBooksInOrders
+      responses:
+        '200':
+          description: A list of books in an order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+        '404':
+          description: Order Not Found
+
+  /orders/{id}/books:
+    post:
+      summary: Add a book to an existing order
+      operationId: addBookToOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book Added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+        '404':
+          description: Book Not Found
+
+  /orders/{id}/books/{ISBN}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: ISBN
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      summary: Remove a book from an existing order
+      operationId: removeBookFromOrder
+      responses:
+        '204':
+          description: Book Removed
+        '404':
+          description: Book Not Found
+
+
+
+
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        birthYear:
+          type: integer
+        nationality:
+          type: string
+      example:
+        id: 1
+        name: John Steinbeck
+        birthYear: 1902
+        nationality: American
+
+
+    Book:
+      type: object
+      properties:
+        ISBN:
+          type: string
+        title:
+          type: string
+        publicationYear:
+          type: integer
+        price:
+          type: integer
+          format: number
+      example:
+        ISBN: 128723
+        title: Adventures of Anastasia
+        publicationYear: 2004
+        price: 15.00
+
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        timestamp:
+          type: string
+          format: date-time
+        customerName:
+          type: string
+      example:
+        id: 6700
+        timestamp: 2022-02-28 14:00:00
+        customerName: Jack Pilony
+
+
+
+# Placeholder file, replace this content with your Open API 3 spec

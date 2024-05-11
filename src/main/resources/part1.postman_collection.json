@@ -1,0 +1,1698 @@
+{
+  "info": {
+    "_postman_id": "90eb6488-ac42-4f00-8aa2-af02cbb850e8",
+    "name": "part1.postman_collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33336925"
+  },
+  "item": [
+    {
+      "name": "GET /authors(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Response status code is 200 if there are authors\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/authors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/authors(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/invalid",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "invalid"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/authors(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Response status code is 200 (OK)\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains the created author\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.name).to.eql(\"Steven Madden\");\r",
+              "    pm.expect(jsonData.birthyear).to.eql(1980);\r",
+              "    pm.expect(jsonData.nationality).to.eql(\"American\");\r",
+              "});\r",
+              "\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Steven Madden\",\r\n    \"birthyear\": 1980,\r\n    \"nationality\": \"American\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/authors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/authors(409)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Response status code is 409 (Conflict) if author already exists\", function () {\r",
+              "    pm.response.to.have.status(409);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Steven Madden\",\r\n    \"birthyear\": 1980,\r\n    \"nationality\": \"American\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/authors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/authors/{id}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 200\", function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Response body contains the requested author\", function () {\r",
+              "    var responseJSON = pm.response.json();\r",
+              "\r",
+              "    pm.expect(responseJSON).to.be.an('object');\r",
+              "    pm.expect(responseJSON).to.have.property('id');\r",
+              "    pm.expect(responseJSON).to.have.property('name');\r",
+              "    pm.expect(responseJSON).to.have.property('birthyear');\r",
+              "    pm.expect(responseJSON).to.have.property('nationality');\r",
+              "    pm.expect(responseJSON).to.have.property('books').that.is.an('array');\r",
+              "\r",
+              "    responseJSON.books.forEach((book) => {\r",
+              "     pm.expect(book).to.have.property('title');\r",
+              "     pm.expect(book).to.have.property('publicationYear');\r",
+              "     pm.expect(book).to.have.property('price');\r",
+              "     pm.expect(book).to.have.property('isbn');\r",
+              "     pm.expect(book).to.have.property('orders').that.is.an('array');\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/authors/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/authors/{id} (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404 for non-existing author\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/authors/10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "10"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT/authors/{id}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains the updated author\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"name\", \"Dave Smith\");\r",
+              "    pm.expect(jsonData).to.have.property(\"birthyear\", 1990);\r",
+              "    pm.expect(jsonData).to.have.property(\"nationality\", \"Black British\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Dave Smith\",\r\n    \"birthyear\": 1990,\r\n    \"nationality\": \"Black British\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/authors/4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT/authors/{id}(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404 for non-existing author\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Dave Smith\",\r\n    \"birthyear\": 1990,\r\n    \"nationality\": \"Black British\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/authors/6",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "6"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE/authors/{id}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/authors/4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE/authors/{id} (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/authors/5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/authors/{id}/books(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains books\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/authors/1/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "1",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/authors/{id}/books(400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/authors/10/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "authors",
+            "10",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/books(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains a list of books\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/books(400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/invalid",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "invalid"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/books(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains the created book\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('isbn');\r",
+              "    pm.expect(jsonData).to.have.property('title');\r",
+              "    pm.expect(jsonData).to.have.property('publicationYear');\r",
+              "    pm.expect(jsonData).to.have.property('price');\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \" The lion king\",\r\n    \"publicationYear\": 2002,\r\n    \"price\": 45.99,\r\n    \"isbn\": \"99999\"\r\n}\r\n\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/books(409)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 409\", function () {\r",
+              "    pm.response.to.have.status(409);\r",
+              "});\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \" The lion king\",\r\n    \"publicationYear\": 2002,\r\n    \"price\": 45.99,\r\n    \"isbn\": \"99999\"\r\n}\r\n\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/books/{ISBN}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "var responseBody = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response body is not empty\", function () {\r",
+              "    pm.expect(responseBody).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains the created book\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('isbn');\r",
+              "    pm.expect(jsonData).to.have.property('title');\r",
+              "    pm.expect(jsonData).to.have.property('publicationYear');\r",
+              "    pm.expect(jsonData).to.have.property('price');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/566231",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "566231"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/books/{ISBN}(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/5662",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "5662"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT /books/{ISBN}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains updated book details\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.isbn).to.equal(\"99999\");\r",
+              "    pm.expect(jsonData.title).to.equal(\"Daily Stoic\");\r",
+              "    pm.expect(jsonData.publicationYear).to.equal(1995);\r",
+              "    pm.expect(jsonData.price).to.equal(34.99);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"isbn\": \"99999\",\r\n    \"title\": \"Daily Stoic\",\r\n    \"publicationYear\": 1995,\r\n    \"price\": 34.99\r\n    \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/books/99999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "99999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT /books/{ISBN}(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \" Daily Stoic\",\r\n    \"publicationYear\": 1995,\r\n    \"price\": 34.99,\r\n    \"isbn\": \"999999\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/books/999998",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "999998"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE/books/999998(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Book is deleted successfully\", function() {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Book deleted successfully\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/99999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "99999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE/books/999998(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "pm.test(\"Status code is 404\", function() {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Book with invalid ISBN not found\", function() {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Book not found\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/999998",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "999998"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /books/{ISBN}/authors(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains list of authors\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.books).to.be.an('array').that.is.not.empty;\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/13579/authors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "13579",
+            "authors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /books/{ISBN}/authors(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function() {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/23333/authors",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "23333",
+            "authors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /books/{ISBN}/orders(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains list of orders containing the requested book\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/97050/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "97050",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /books/{ISBN}/orders(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function() {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/books/97070/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "books",
+            "97070",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /orders(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Response body contains list of orders\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /orders(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/invalid",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "invalid"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/orders(201)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test for successful response\r",
+              "pm.test(\"Status code is 201\", function() {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "// Test for response body containing the created order\r",
+              "pm.test(\"Response body contains the created order\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.datetime).to.equal(\"2024-04-25T03:12:36.789+00:00\");\r",
+              "    pm.expect(jsonData.customerName).to.equal(\"Adewale Ayuba\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"datetime\": \"2024-04-25T03:12:36.789+00:00\",\r\n    \"customerName\": \"Adewale Ayuba\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/orders(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400 for invalid request\", function() {\r",
+              "    pm.expect(pm.response.code).to.eql(400);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Error message is returned\", function () {\r",
+              "    var responseJson = pm.response.json();\r",
+              "    pm.expect(responseJson).to.have.property('message');\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"datetime\": \"invalid-date\",\r\n    \"customerName\": null\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /orders/{id}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains order details\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.exist;\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/orders/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /orders/{id}(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function() {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/orders/10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "10"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT /orders/{id}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains updated order details\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.customerName).to.equal(\"Walexis\"); \r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"customerName\": \"Walexis\",\r\n    \"datetime\": \"2023-04-25T12:00:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT/orders/{id}(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404 for non-existent order\", function() {\r",
+              "    pm.expect(pm.response.code).to.eql(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"customerName\": \"Walexis\",\r\n    \"datetime\": \"2023-04-25T12:00:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders/10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "10"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/orders/{id}/books(200)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/orders/3/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "3",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET/orders/{id}/books(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404 for non-existent order\", function() {\r",
+              "    pm.expect(pm.response.code).to.eql(404);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders/8/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "8",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/orders/{id}/books(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body contains updated order details with added book\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.isbn).to.exist;\r",
+              "    \r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"48 laws of power\",\r\n    \"publicationYear\": 1999,\r\n    \"price\": 45.99,\r\n    \"isbn\": \"13579\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders/1/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "1",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST/orders/{id}/books(404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function() {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"48 laws of power\",\r\n    \"publicationYear\": 1999,\r\n    \"price\": 45.99,\r\n    \"isbn\": \"13579\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/orders/10/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "10",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE/orders/{id}/books/{ISBN}(200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains order object\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('id');\r",
+              "});\r",
+              "\r",
+              "\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/orders/1/books/13579",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "1",
+            "books",
+            "13579"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE/orders/{id}/books/{ISBN}()",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404 Not Found\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Error message is returned\", function () {\r",
+              "    var jsonData = pm.response.text(); // Changed from pm.response.json() to pm.response.text()\r",
+              "    pm.expect(jsonData).to.include(\"Book not found in order\"); // Changed from jsonData.message to jsonData\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/orders/1/books/13579",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "orders",
+            "1",
+            "books",
+            "13579"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
